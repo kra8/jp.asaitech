@@ -1,94 +1,92 @@
 # AsaiTech · Marketing LP
 
-[![Astro](https://img.shields.io/badge/Astro-6-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-0EA5E9?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Node.js](https://img.shields.io/badge/node-%E2%89%A522.12-417505?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[Astro](https://astro.build/)
+[Tailwind CSS](https://tailwindcss.com/)
+[Node.js](https://nodejs.org/)
 
-> **個人事業 AsaiTech** の公式ランディングページ。**静的サイトのみ**（SSR / DB なし）。文言・構成はビジネス公開前提。
+個人事業 **AsaiTech** の公式ランディングページ。静的出力のみ（SSR・DB なし）。文言・構成とも公開前提です。
 
 ---
 
 ## 概要
 
-1 ページにヒーロー・概要・サービス・強み・技術スタック・実績・問い合わせをまとめた構成です。アクセシビリティと軽量なモーションを意識し、`prefers-reduced-motion` へ配慮しています。
+シングルページ構成（ヒーロー／概要／サービス／強み／技術スタック／実績／問い合わせ）。アクセシビリティと軽いモーション、`prefers-reduced-motion` への配慮あり。
 
-| 項目 | 内容 |
-|------|------|
-| 出力 | `output: "static"` → `dist/` |
-| スタイル | Tailwind CSS **v4**（`@tailwindcss/vite`） |
-| ホスティング | GitHub Pages（Actions でビルド後デプロイ） |
 
----
+|      |                                      |
+| ---- | ------------------------------------ |
+| 出力   | `output: "static"` → `dist/`         |
+| スタイル | Tailwind CSS v4（`@tailwindcss/vite`） |
+| 公開   | GitHub Pages（Actions でビルド後デプロイ）      |
 
-## スタック（ややマニアック）
-
-- **Astro 6** … 島アーキテクチャは使わず、ほぼ静的 `.astro` の組み立て。SEO・メタ・構造化データは `Layout.astro` とコンテンツから組み立て。
-- **Tailwind v4** … `@import "tailwindcss"` と Vite プラグイン一本化。`@layer utilities` で `.leading-readable` など本文向け行間を定義。
-- **画像** … `astro:assets` の `<Image />` でレスポンシブ WebP 出力。
-- **CI** … `actions/configure-pages` + `upload-pages-artifact` + `deploy-pages`。リポジトリ種別に応じて `SITE_URL` / `BASE_PATH` をジョブ内で決定（`<owner>.github.io` 特例込み）。
-
-ローカルでは `BASE_PATH` を省略すると `base: '/'`。本番ビルドのみ CI がパスを注入します。
 
 ---
 
-## ディレクトリ構成（抜粋）
+## スタック
+
+- **Astro 6** — ほぼ静的な `.astro` の組み立て。SEO・メタ・構造化データは `Layout.astro` とコンテンツから生成。
+- **Tailwind v4** — `@import "tailwindcss"` と Vite プラグイン一本化。`@layer utilities` で `.leading-readable` など本文用ユーティリティ。
+- **画像** — `astro:assets` の `<Image />` でレスポンシブ WebP。ビルド時の処理に **sharp** を明示依存として追加（pnpm 配下で Astro が解決できるようにするため）。
+- **CI** — `configure-pages` → `upload-pages-artifact` → `deploy-pages`。`SITE_URL` / `BASE_PATH` はリポジトリ種別（`<owner>.github.io` 含む）に応じてジョブ内で設定。
+
+ローカルでは `BASE_PATH` 未指定時 `base: '/'`。本番は CI がパスを注入。
+
+---
+
+## ディレクトリ
 
 ```text
 .
 ├── .github/workflows/deploy-github-pages.yml
-├── astro.config.mjs          # site / base は環境変数（Pages 用）
-├── public/                   # favicon, OG 画像などそのまま配信
+├── astro.config.mjs          # site / base ← 環境変数（Pages）
+├── public/                     # favicon, OG 画像など
 ├── src/
-│   ├── assets/               # 写真など（ビルド時最適化）
-│   ├── components/           # セクション・ヘッダー・フッター等
-│   ├── content/site.ts       # 文言・ナビ・実績などの単一ソース
+│   ├── assets/
+│   ├── components/
+│   ├── content/site.ts         # 文言・ナビ・実績の単一ソース
 │   ├── layouts/Layout.astro
 │   ├── pages/index.astro
-│   └── styles/global.css     # Tailwind + キーフレーム + utilities
-└── package.json
+│   └── styles/global.css       # Tailwind + keyframes + utilities
+├── package.json
+└── pnpm-lock.yaml
 ```
 
-コピー編集の起点は **`src/content/site.ts`** がほぼすべてです。
+編集の起点は **`src/content/site.ts`** が中心です。
 
 ---
 
-## 開発コマンド
+## 開発
 
-**要件:** Node.js **≥ 22.12**
+Node.js **≥ 22.12** · パッケージマネージャは **pnpm**（`package.json` の `packageManager` を参照）
 
 | Command | 説明 |
-|---------|------|
-| `npm install` | 依存関係のインストール |
-| `npm run dev` | 開発サーバー（既定 `localhost:4321`） |
-| `npm run build` | 本番ビルド → `./dist/` |
-| `npm run preview` | ビルド結果のローカル確認 |
+| -------- | ------ |
+| `pnpm install` | 依存のインストール |
+| `pnpm dev` | 開発サーバー（既定 `localhost:4321`） |
+| `pnpm build` | `dist/` へ本番ビルド |
+| `pnpm preview` | ビルド結果のプレビュー |
 
-GitHub Pages と同じベースパスで試す場合の例:
+
+GitHub Pages と同じベースパスで確認する例:
 
 ```bash
-SITE_URL="https://<owner>.github.io/<repo>" BASE_PATH="/<repo>/" npm run build && npm run preview
+SITE_URL="https://<owner>.github.io/<repo>" BASE_PATH="/<repo>/" pnpm build && pnpm preview
 ```
 
 ---
 
 ## デプロイ
 
-`main` へ push すると **GitHub Actions** が `npm ci` → `npm run build` し、`dist` を Pages に公開します。リポジトリの **Settings → Pages → GitHub Actions** を選択済みであることが前提です。
+`main` への push で GitHub Actions が `pnpm install --frozen-lockfile` → `pnpm build` を実行し、`dist` を公開します。リポジトリの **Settings → Pages** でソースに **GitHub Actions** を選んでおいてください。
 
 ---
 
-## 開発プロセスと AI について
+## AI と開発
 
-このリポジトリは **LLM を前提にした開発** をしています（例: Cursor などのエージェント／チャットによるコード生成・リファクタ・文案たたき台）。
-
-- 指示・レビュー・最終判断は人間側です。
-- 生成されたコードはビルド・表示・アクセシビリティの観点で手直ししています。
-- 「AI で楽した」隠しではなく、**実務でもツールをフル稼働するスタンス**として開示しています。
-
-コントリビューションやフォークをする場合も、同様にエディタ支援・ボットを気にせず使って問題ありません。
+LLM・エージェント（Cursor 等）を前提にした開発です。コード生成・リファクタ・文案のたたき台まで幅広く利用し、指示・レビュー・最終判断は人間側です。ビルド・表示・アクセシビリティは手で整えています。フォークやコントリビューションでも、エディタ支援を自由に使って構いません。
 
 ---
 
-## ライセンス・公開範囲
+## 公開について
 
-コードおよびサイトに載せている事業情報は **公開前提** です。再利用やフォークの条件を細かく決めていない場合、既定の著作権のみが適用されます。必要に応じてリポジトリに `LICENSE` を追加してください。
+コードおよびサイトに載せる事業情報はすべて公開前提です。再利用条件は別途 `LICENSE` で明示しない限り、既定の著作権が適用されます。
