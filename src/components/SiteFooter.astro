@@ -1,0 +1,51 @@
+---
+import { brand, footerNote, invoice, navItems } from '../content/site';
+
+const year = new Date().getFullYear();
+
+const footerTextClass =
+  'm-0 text-pretty text-sm leading-readable text-slate-600';
+---
+
+<footer class="border-t border-slate-100 bg-slate-50/50 py-14 md:py-16">
+  <div class="mx-auto flex max-w-5xl flex-col gap-8 px-4 sm:px-6 md:gap-10">
+    <nav aria-label="フッターナビゲーション">
+      <ul class="m-0 flex flex-wrap gap-x-6 gap-y-2 p-0 text-sm font-medium leading-readable text-slate-600">
+        {
+          navItems.map((item) => (
+            <li class="m-0">
+              <a
+                href={item.href}
+                class="rounded-md outline-none transition-colors hover:text-sky-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="m-0">
+          <a
+            href="#hero"
+            class="rounded-md outline-none transition-colors hover:text-sky-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+          >
+            ページ上部へ
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <p class:list={[footerTextClass, 'font-medium text-slate-700']}>
+      {invoice.footerLine}
+      <span class="mt-2 block sm:mt-1">
+        <span class="text-slate-700">登録番号（適格請求書発行事業者番号）</span>
+        <span class="mt-0.5 block font-mono text-[0.95rem] tabular-nums tracking-wide text-slate-900 sm:mt-0 sm:ml-2 sm:inline">
+          {invoice.registrationNumber}
+        </span>
+      </span>
+    </p>
+    <p class={footerTextClass}>{footerNote}</p>
+    <p class="m-0 text-sm leading-readable text-slate-500">
+      © {year}
+      {brand.name}
+    </p>
+  </div>
+</footer>

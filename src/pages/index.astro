@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MotionEnhancements from '../components/MotionEnhancements.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Hero from '../components/Hero.astro';
+import AboutSection from '../components/AboutSection.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+import StrengthsSection from '../components/StrengthsSection.astro';
+import TechStackSection from '../components/TechStackSection.astro';
+import WorksSection from '../components/WorksSection.astro';
+import ContactSection from '../components/ContactSection.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<Layout>
+  <SiteHeader />
+  <main id="main-content" tabindex="-1">
+    <Hero />
+    <AboutSection />
+    <ServicesSection />
+    <StrengthsSection />
+    <TechStackSection />
+    <WorksSection />
+    <ContactSection />
+  </main>
+  <SiteFooter />
+  <MotionEnhancements />
+</Layout>

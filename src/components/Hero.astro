@@ -1,0 +1,68 @@
+---
+import Icon from './Icon.astro';
+import { brand } from '../content/site';
+
+const introClass =
+  'text-pretty text-base leading-readable text-slate-600 md:text-lg md:leading-readable-lg';
+/** 見出し〜本文は同一の送り幅で左右を揃える */
+const heroMeasureClass = 'w-full max-w-2xl';
+---
+
+<section
+  id="hero"
+  aria-labelledby="hero-heading"
+  class="relative overflow-hidden border-b border-slate-100 bg-gradient-to-b from-white via-white to-slate-50/80 py-20 md:py-28 lg:py-32"
+>
+  <div
+    class="animate-hero-line pointer-events-none absolute inset-x-0 top-0 h-px origin-center bg-gradient-to-r from-transparent via-sky-300/80 to-transparent"
+    aria-hidden="true"
+  />
+  <div class="relative mx-auto max-w-5xl px-4 sm:px-6">
+    <div class:list={[heroMeasureClass, 'flex flex-col gap-5 md:gap-6']}>
+      <p class="m-0 w-full animate-hero-in">
+        <span
+          class="inline-flex max-w-full items-center rounded-full border border-sky-200/80 bg-sky-50 px-3 py-1 text-xs font-semibold tracking-wide text-sky-900"
+        >
+          サイト制作・開発支援（個人事業）
+        </span>
+      </p>
+      <h1
+        id="hero-heading"
+        class="animate-hero-in animate-hero-delay-1 w-full text-pretty text-3xl font-semibold leading-normal tracking-tight text-slate-900 md:text-[2.125rem] md:leading-snug"
+      >
+        {brand.tagline}
+      </h1>
+      <div class="flex w-full flex-col gap-5 md:gap-6">
+        {
+          brand.introParagraphs.map((text, i) => (
+            <p
+              class:list={[
+                introClass,
+                'm-0 w-full animate-hero-in',
+                i === 0 ? 'animate-hero-delay-2' : 'animate-hero-delay-3',
+              ]}
+            >
+              {text}
+            </p>
+          ))
+        }
+      </div>
+      <div class="animate-hero-in animate-hero-delay-4 flex w-full flex-wrap gap-3 pt-1 sm:gap-4">
+        <a
+          href="#contact"
+          class="motion-safe:hover:-translate-y-px inline-flex min-h-11 min-w-[10rem] items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm outline-none transition-[background-color,transform,box-shadow] duration-200 hover:bg-slate-800 hover:shadow-md motion-safe:active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+        >
+          <Icon name="mail" size={17} class="opacity-90" />
+          お問い合わせへ
+        </a>
+        <a
+          href="#services"
+          class="motion-safe:hover:-translate-y-px inline-flex min-h-11 min-w-[10rem] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-800 outline-none transition-[border-color,background-color,transform,box-shadow] duration-200 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm motion-safe:active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+        >
+          <Icon name="layout-template" size={17} class="text-slate-500" />
+          サービスを見る
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

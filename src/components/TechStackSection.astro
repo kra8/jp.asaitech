@@ -1,0 +1,21 @@
+---
+import SurfaceCard from './SurfaceCard.astro';
+import Section from './Section.astro';
+import { techStack } from '../content/site';
+
+const cardBodyClass =
+  'm-0 mt-4 flex-1 text-sm leading-readable text-slate-600 md:text-base md:leading-readable-lg';
+---
+
+<Section id="tech-stack" title={techStack.title} lead={techStack.lead} tone="muted">
+  <ul class="m-0 grid list-none gap-6 p-0 md:grid-cols-2 md:gap-7 xl:gap-8" data-stagger-children>
+    {
+      techStack.items.map((item) => (
+        <SurfaceCard tag="li" class="md:p-7">
+          <h3 class="m-0 text-lg font-semibold leading-snug tracking-tight text-slate-900">{item.title}</h3>
+          <p class={cardBodyClass}>{item.body}</p>
+        </SurfaceCard>
+      ))
+    }
+  </ul>
+</Section>

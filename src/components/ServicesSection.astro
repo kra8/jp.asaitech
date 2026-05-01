@@ -1,0 +1,21 @@
+---
+import SurfaceCard from './SurfaceCard.astro';
+import Section from './Section.astro';
+import { services } from '../content/site';
+
+const cardBodyClass =
+  'm-0 mt-4 flex-1 text-sm leading-readable text-slate-600 md:text-base md:leading-readable-lg';
+---
+
+<Section id="services" title={services.title} lead={services.lead} tone="muted">
+  <ul class="m-0 grid list-none gap-6 p-0 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3" data-stagger-children>
+    {
+      services.items.map((item) => (
+        <SurfaceCard tag="li">
+          <h3 class="m-0 text-lg font-semibold leading-snug tracking-tight text-slate-900">{item.title}</h3>
+          <p class={cardBodyClass}>{item.body}</p>
+        </SurfaceCard>
+      ))
+    }
+  </ul>
+</Section>

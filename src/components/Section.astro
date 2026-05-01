@@ -1,0 +1,41 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  lead?: string;
+  tone?: 'default' | 'muted';
+}
+
+const { id, title, lead, tone = 'default' } = Astro.props;
+
+const bg = tone === 'muted' ? 'bg-slate-50/90' : 'bg-white';
+
+/** 見出し直下のリード（セクション幅いっぱいまで広がる） */
+const leadClass =
+  'text-pretty text-base leading-readable text-slate-600 md:text-lg md:leading-readable-lg';
+---
+
+<section
+  id={id}
+  aria-labelledby={`${id}-heading`}
+  class:list={[bg, 'scroll-mt-24 py-20 md:py-28']}
+>
+  <div class="mx-auto flex max-w-5xl flex-col gap-12 px-4 sm:px-6 md:gap-14" data-reveal>
+    <header>
+      <span
+        class="block h-1 w-11 shrink-0 rounded-full bg-sky-800 md:w-12"
+        aria-hidden="true"
+      />
+      <h2
+        id={`${id}-heading`}
+        class="mt-5 text-pretty text-2xl font-semibold leading-snug tracking-tight text-slate-900 md:mt-6 md:text-3xl"
+      >
+        {title}
+      </h2>
+      {lead && <p class:list={[leadClass, 'mt-4 md:mt-5']}>{lead}</p>}
+    </header>
+    <div class="min-w-0">
+      <slot />
+    </div>
+  </div>
+</section>

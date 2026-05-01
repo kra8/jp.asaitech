@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes shimmer-line {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleX(0.88);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleX(1);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    margin: 0;
+    text-rendering: optimizeLegibility;
+    line-height: 1.7;
+  }
+
+  :focus-visible {
+    outline-color: rgb(14 116 144); /* sky-800 — アクセントと揃える */
+  }
+
+  ::selection {
+    background-color: rgb(224 242 254);
+    color: rgb(15 23 42);
+  }
+}
+
+@layer utilities {
+  /** 本文ブロック用の行間（日本語読みやすさ優先） */
+  .leading-readable {
+    line-height: 1.78;
+  }
+  .leading-readable-lg {
+    line-height: 1.82;
+  }
+  .animate-hero-line {
+    animation: shimmer-line 5s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-hero-in {
+      animation: fade-rise 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .animate-hero-delay-1 {
+      animation-delay: 75ms;
+    }
+    .animate-hero-delay-2 {
+      animation-delay: 145ms;
+    }
+    .animate-hero-delay-3 {
+      animation-delay: 215ms;
+    }
+    .animate-hero-delay-4 {
+      animation-delay: 285ms;
+    }
+    .animate-hero-delay-5 {
+      animation-delay: 355ms;
+    }
+
+    [data-reveal]:not(.is-revealed) {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+    }
+
+    [data-reveal].is-revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition:
+        opacity 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    [data-reveal].is-revealed [data-stagger-children] > * {
+      animation: fade-rise 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(1) {
+      animation-delay: 40ms;
+    }
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(2) {
+      animation-delay: 95ms;
+    }
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(3) {
+      animation-delay: 150ms;
+    }
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(4) {
+      animation-delay: 205ms;
+    }
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(5) {
+      animation-delay: 260ms;
+    }
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(6) {
+      animation-delay: 315ms;
+    }
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(7) {
+      animation-delay: 370ms;
+    }
+    [data-reveal].is-revealed [data-stagger-children] > *:nth-child(8) {
+      animation-delay: 425ms;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-hero-in {
+      animation: none;
+    }
+
+    .animate-hero-line {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    [data-reveal]:not(.is-revealed),
+    [data-reveal].is-revealed {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    [data-reveal].is-revealed [data-stagger-children] > * {
+      animation: none !important;
+    }
+  }
+}

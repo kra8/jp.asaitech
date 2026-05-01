@@ -1,0 +1,71 @@
+---
+import { brand, navItems } from '../content/site';
+---
+
+<a
+  href="#main-content"
+  class="sr-only leading-snug focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-slate-900 focus:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-sky-800"
+>
+  メインコンテンツへスキップ
+</a>
+
+<header
+  id="site-header"
+  class="group sticky top-0 z-40 border-b border-slate-200/75 bg-white/90 shadow-[0_1px_0_0_rgb(15_23_42/0.04)] backdrop-blur-md transition-[box-shadow] duration-200 ease-out supports-[backdrop-filter]:bg-white/78 motion-reduce:transition-none data-[compact]:shadow-[0_1px_0_0_rgb(15_23_42/0.06)]"
+>
+  <div
+    class="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5 transition-[padding,gap] duration-200 ease-out motion-reduce:transition-none sm:gap-7 sm:px-6 sm:py-[1.125rem] group-data-[compact]:gap-2 group-data-[compact]:px-3 group-data-[compact]:py-1.5 group-data-[compact]:sm:gap-5 group-data-[compact]:sm:px-5 group-data-[compact]:sm:py-2"
+  >
+    <a
+      href="#hero"
+      class="shrink-0 rounded-lg text-base font-semibold leading-snug tracking-tight text-slate-900 outline-none ring-sky-800/30 transition-[color,font-size] duration-200 ease-out hover:text-sky-950 motion-reduce:transition-none sm:text-lg group-data-[compact]:text-sm group-data-[compact]:sm:text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+    >
+      {brand.name}
+    </a>
+    <nav aria-label="ページ内リンク" class="min-w-0 flex-1 sm:flex-none">
+      <ul
+        class="flex flex-wrap items-center justify-end gap-x-1 gap-y-1 text-sm font-medium leading-snug text-slate-600 transition-[gap] duration-200 ease-out motion-reduce:transition-none sm:gap-x-4 sm:gap-y-2 md:gap-x-5 group-data-[compact]:gap-x-px group-data-[compact]:gap-y-px group-data-[compact]:sm:gap-x-3 group-data-[compact]:sm:gap-y-1 group-data-[compact]:md:gap-x-4"
+      >
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-1.5 text-sm outline-none transition-[padding,min-height,font-size] duration-200 ease-out hover:bg-slate-100 hover:text-sky-950 motion-reduce:transition-none sm:min-h-0 sm:justify-start sm:rounded-lg sm:px-2.5 sm:py-1.5 group-data-[compact]:min-h-8 group-data-[compact]:px-1.5 group-data-[compact]:py-1 group-data-[compact]:text-[0.8125rem] group-data-[compact]:sm:min-h-0 group-data-[compact]:sm:px-2 group-data-[compact]:sm:py-1 group-data-[compact]:sm:text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const SCROLL_COMPACT_PX = 24;
+
+  function syncHeaderCompact() {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+    const y = window.scrollY || document.documentElement.scrollTop;
+    if (y > SCROLL_COMPACT_PX) header.setAttribute('data-compact', '');
+    else header.removeAttribute('data-compact');
+  }
+
+  let scheduled = false;
+  function onScroll() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      syncHeaderCompact();
+    });
+  }
+
+  syncHeaderCompact();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  document.addEventListener('astro:page-load', syncHeaderCompact);
+</script>

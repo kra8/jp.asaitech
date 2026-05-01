@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import { about, brand, contact, invoice, siteMeta } from '../content/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title = siteMeta.title,
+  description = siteMeta.description,
+  canonicalUrl = siteMeta.siteUrl,
+} = Astro.props;
+
+const ogImageUrl = new URL(siteMeta.ogImagePath, canonicalUrl).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'AsaiTech',
+  description,
+  url: canonicalUrl,
+  areaServed: 'JP',
+  email: contact.email.address,
+  sameAs: [contact.github.url, contact.blog.url],
+  ...(invoice.registrationNumber ? { taxID: invoice.registrationNumber } : {}),
+} as const;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={siteMeta.ogLocale} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={about.photo.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body
+    class="min-h-dvh bg-white font-sans text-slate-900 antialiased [font-feature-settings:'palt']"
+  >
+    <slot />
+  </body>
+</html>

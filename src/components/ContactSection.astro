@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+import SurfaceCard from './SurfaceCard.astro';
+import Section from './Section.astro';
+import { contact } from '../content/site';
+
+const cardTitleClass =
+  'm-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-lg font-semibold leading-snug tracking-tight text-slate-900';
+const cardTitleIconClass = 'text-sky-800/85 shrink-0';
+---
+
+<Section id="contact" title={contact.title} lead={contact.lead} tone="muted">
+  <div class="grid gap-7 md:grid-cols-2 lg:grid-cols-3 lg:items-stretch lg:gap-8" data-stagger-children>
+    <SurfaceCard class="md:p-8">
+      <h3 class={cardTitleClass}>
+        <Icon name="mail" size={19} class={cardTitleIconClass} />
+        <span>{contact.email.label}</span>
+      </h3>
+      <p class="m-0 mt-4">
+        <a
+          href={`mailto:${contact.email.address}`}
+          class="break-all text-base font-medium leading-readable text-sky-900 underline decoration-sky-300 underline-offset-[5px] transition-colors hover:decoration-sky-600 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+        >
+          {contact.email.address}
+        </a>
+      </p>
+      <p class="m-0 mt-4 text-sm leading-readable text-slate-500">
+        件名にご依頼概要を書いていただけるとスムーズです。
+      </p>
+    </SurfaceCard>
+
+    <SurfaceCard class="md:p-8">
+      <h3 class={cardTitleClass}>
+        <Icon name="github" size={19} class={cardTitleIconClass} />
+        <span>{contact.github.label}</span>
+      </h3>
+      <p class="m-0 mt-4">
+        <a
+          href={contact.github.url}
+          class="inline-flex items-center gap-1 text-base font-medium leading-readable text-sky-900 underline decoration-sky-300 underline-offset-[5px] transition-[color,decoration-color] hover:decoration-sky-600 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          @{contact.github.username}
+          <span class="sr-only">（新しいタブで開きます）</span>
+        </a>
+      </p>
+      <p class="m-0 mt-4 text-sm leading-readable text-slate-500">{contact.github.note}</p>
+    </SurfaceCard>
+
+    <SurfaceCard class="md:p-8">
+      <h3 class={cardTitleClass}>
+        <Icon name="book-open" size={19} class={cardTitleIconClass} />
+        <span>{contact.blog.label}</span>
+      </h3>
+      <p class="m-0 mt-4">
+        <a
+          href={contact.blog.url}
+          class="break-all text-base font-medium leading-readable text-sky-900 underline decoration-sky-300 underline-offset-[5px] transition-colors hover:decoration-sky-600 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          zenn.dev/kra8
+          <span class="sr-only">（新しいタブで開きます）</span>
+        </a>
+      </p>
+      <p class="m-0 mt-4 text-sm leading-readable text-slate-500">{contact.blog.note}</p>
+    </SurfaceCard>
+  </div>
+</Section>
