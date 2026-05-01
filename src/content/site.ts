@@ -5,7 +5,11 @@ export const siteMeta = {
   title: 'AsaiTech | Webサイト制作・開発支援（個人事業）',
   description:
     '個人事業・AsaiTech（京都府木津川市）。サイト制作、Next.js・Astro、Flutter アプリなど。koki@asai.email / GitHub / Zenn。',
-  siteUrl: 'https://example.com', // 公開URLが決まったら差し替え
+  /** 公開サイトのトップ URL（canonical のフォールバック）。＝ SITE_URL（オリジン）＋ BASE_PATH。独自ドメイン時は astro.config の DEFAULT_SITE と合わせて更新。 */
+  siteUrl: 'https://kra8.github.io/jp.asaitech',
+  /** メタ keywords（補助。本文・見出しが主） */
+  keywords:
+    'AsaiTech,Webサイト制作,ホームページ制作,フロントエンド開発,個人事業,京都府木津川市,Astro,Next.js,Flutter',
   /** SNSシェア用（`public/og-asai-dog.png`）。サイトURL変更時は絶対URLが自動で組み立つ */
   ogImagePath: '/og-asai-dog.png',
   ogLocale: 'ja_JP',

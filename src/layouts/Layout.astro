@@ -11,21 +11,50 @@ interface Props {
 const {
   title = siteMeta.title,
   description = siteMeta.description,
-  canonicalUrl = siteMeta.siteUrl,
+  canonicalUrl: canonicalUrlProp,
 } = Astro.props;
 
-const ogImageUrl = new URL(siteMeta.ogImagePath, canonicalUrl).href;
+/** 公開ルート（末尾スラッシュありになりがちだが canonical は正規化して使用） */
+const rootHref =
+  Astro.site != null
+    ? new URL(import.meta.env.BASE_URL, Astro.site).href.replace(/\/?$/, '/')
+    : siteMeta.siteUrl.replace(/\/?$/, '/');
+
+const canonicalUrl = (canonicalUrlProp ?? rootHref).replace(/\/?$/, '/');
+
+const ogImageUrl = new URL(siteMeta.ogImagePath.replace(/^\//, ''), rootHref).href;
 
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'AsaiTech',
-  description,
-  url: canonicalUrl,
-  areaServed: 'JP',
-  email: contact.email.address,
-  sameAs: [contact.github.url, contact.blog.url],
-  ...(invoice.registrationNumber ? { taxID: invoice.registrationNumber } : {}),
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${canonicalUrl}#website`,
+      url: canonicalUrl,
+      name: brand.name,
+      description,
+      inLanguage: 'ja-JP',
+      publisher: { '@id': `${canonicalUrl}#business` },
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${canonicalUrl}#business`,
+      name: 'AsaiTech',
+      description,
+      url: canonicalUrl,
+      image: ogImageUrl,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: '木津川市',
+        addressRegion: '京都府',
+        addressCountry: 'JP',
+      },
+      areaServed: { '@type': 'Country', name: 'Japan' },
+      email: contact.email.address,
+      sameAs: [contact.github.url, contact.blog.url],
+      ...(invoice.registrationNumber ? { taxID: invoice.registrationNumber } : {}),
+    },
+  ],
 } as const;
 
 const iconBase = import.meta.env.BASE_URL;
@@ -45,7 +74,11 @@ const iconBase = import.meta.env.BASE_URL;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={siteMeta.keywords} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="ja" href={canonicalUrl} />
+    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={brand.name} />
     <meta property="og:title" content={title} />
@@ -53,6 +86,7 @@ const iconBase = import.meta.env.BASE_URL;
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content={siteMeta.ogLocale} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:alt" content={about.photo.alt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImageUrl} />
