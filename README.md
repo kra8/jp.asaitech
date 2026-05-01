@@ -1,46 +1,92 @@
-# Astro Starter Kit: Basics
+# AsaiTech · Marketing LP
 
-```sh
-npm create astro@latest -- --template basics
-```
+[Astro](https://astro.build/)
+[Tailwind CSS](https://tailwindcss.com/)
+[Node.js](https://nodejs.org/)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+個人事業 **AsaiTech** の公式ランディングページ。静的出力のみ（SSR・DB なし）。文言・構成とも公開前提です。
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## 概要
+
+シングルページ構成（ヒーロー／概要／サービス／強み／技術スタック／実績／問い合わせ）。アクセシビリティと軽いモーション、`prefers-reduced-motion` への配慮あり。
+
+
+|      |                                      |
+| ---- | ------------------------------------ |
+| 出力   | `output: "static"` → `dist/`         |
+| スタイル | Tailwind CSS v4（`@tailwindcss/vite`） |
+| 公開   | GitHub Pages（Actions でビルド後デプロイ）      |
+
+
+---
+
+## スタック
+
+- **Astro 6** — ほぼ静的な `.astro` の組み立て。SEO・メタ・構造化データは `Layout.astro` とコンテンツから生成。
+- **Tailwind v4** — `@import "tailwindcss"` と Vite プラグイン一本化。`@layer utilities` で `.leading-readable` など本文用ユーティリティ。
+- **画像** — `astro:assets` の `<Image />` でレスポンシブ WebP。ビルド時の処理に **sharp** を明示依存として追加（pnpm 配下で Astro が解決できるようにするため）。
+- **CI** — `configure-pages` → `upload-pages-artifact` → `deploy-pages`。`SITE_URL` / `BASE_PATH` はリポジトリ種別（`<owner>.github.io` 含む）に応じてジョブ内で設定。
+
+ローカルでは `BASE_PATH` 未指定時 `base: '/'`。本番は CI がパスを注入。
+
+---
+
+## ディレクトリ
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+.
+├── .github/workflows/deploy-github-pages.yml
+├── astro.config.mjs          # site / base ← 環境変数（Pages）
+├── public/                     # favicon, OG 画像など
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── content/site.ts         # 文言・ナビ・実績の単一ソース
+│   ├── layouts/Layout.astro
+│   ├── pages/index.astro
+│   └── styles/global.css       # Tailwind + keyframes + utilities
+├── package.json
+└── pnpm-lock.yaml
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+編集の起点は **`src/content/site.ts`** が中心です。
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## 開発
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Node.js **≥ 22.12** · パッケージマネージャは **pnpm**（`package.json` の `packageManager` を参照）
 
-## 👀 Want to learn more?
+| Command | 説明 |
+| -------- | ------ |
+| `pnpm install` | 依存のインストール |
+| `pnpm dev` | 開発サーバー（既定 `localhost:4321`） |
+| `pnpm build` | `dist/` へ本番ビルド |
+| `pnpm preview` | ビルド結果のプレビュー |
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+GitHub Pages と同じベースパスで確認する例:
+
+```bash
+SITE_URL="https://<owner>.github.io/<repo>" BASE_PATH="/<repo>/" pnpm build && pnpm preview
+```
+
+---
+
+## デプロイ
+
+`main` への push で GitHub Actions が `pnpm install --frozen-lockfile` → `pnpm build` を実行し、`dist` を公開します。リポジトリの **Settings → Pages** でソースに **GitHub Actions** を選んでおいてください。
+
+---
+
+## AI と開発
+
+LLM・エージェント（Cursor 等）を前提にした開発です。コード生成・リファクタ・文案のたたき台まで幅広く利用し、指示・レビュー・最終判断は人間側です。ビルド・表示・アクセシビリティは手で整えています。フォークやコントリビューションでも、エディタ支援を自由に使って構いません。
+
+---
+
+## 公開について
+
+コードおよびサイトに載せる事業情報はすべて公開前提です。再利用条件は別途 `LICENSE` で明示しない限り、既定の著作権が適用されます。
