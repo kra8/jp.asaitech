@@ -24,6 +24,9 @@ const canonicalUrl = (canonicalUrlProp ?? rootHref).replace(/\/?$/, '/');
 
 const ogImageUrl = new URL(siteMeta.ogImagePath.replace(/^\//, ''), rootHref).href;
 
+/** 木津川市役所付近のおおよその座標（ローカル検索の補助） */
+const kizugawaGeo = { latitude: 34.7361, longitude: 135.8206 };
+
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -49,13 +52,37 @@ const structuredData = {
         addressRegion: '京都府',
         addressCountry: 'JP',
       },
-      areaServed: { '@type': 'Country', name: 'Japan' },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: kizugawaGeo.latitude,
+        longitude: kizugawaGeo.longitude,
+      },
+      areaServed: [
+        {
+          '@type': 'City',
+          name: '木津川市',
+          containedInPlace: { '@type': 'AdministrativeArea', name: '京都府' },
+        },
+        { '@type': 'AdministrativeArea', name: '京都府' },
+        { '@type': 'AdministrativeArea', name: '大阪府' },
+        { '@type': 'AdministrativeArea', name: '奈良県' },
+        { '@type': 'AdministrativeArea', name: '滋賀県' },
+        { '@type': 'AdministrativeArea', name: '兵庫県' },
+        { '@type': 'Country', name: 'Japan' },
+      ],
+      knowsAbout: [
+        'ホームページ制作',
+        'Webサイト制作',
+        'コーポレートサイト',
+        'レスポンシブデザイン',
+        'フロントエンド開発',
+      ],
       email: contact.email.address,
       sameAs: [contact.github.url, contact.blog.url],
       ...(invoice.registrationNumber ? { taxID: invoice.registrationNumber } : {}),
     },
   ],
-} as const;
+};
 
 const iconBase = import.meta.env.BASE_URL;
 ---

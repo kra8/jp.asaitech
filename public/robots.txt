@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# site.ts の siteUrl と整合させること（独自ドメイン・デプロイ先変更時は更新）
+Sitemap: https://kra8.github.io/jp.asaitech/sitemap-index.xml

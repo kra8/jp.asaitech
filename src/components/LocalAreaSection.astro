@@ -1,0 +1,15 @@
+---
+import Section from './Section.astro';
+import { areaCoverage } from '../content/site';
+
+const paragraphClass =
+  'm-0 text-pretty text-base leading-readable text-slate-600 md:text-lg md:leading-readable-lg';
+---
+
+<Section id="area" title={areaCoverage.title} lead={areaCoverage.lead}>
+  <div class="flex flex-col gap-6 md:gap-7" data-stagger-children>
+    {areaCoverage.paragraphs.map((text) => (
+      <p class={paragraphClass}>{text}</p>
+    ))}
+  </div>
+</Section>

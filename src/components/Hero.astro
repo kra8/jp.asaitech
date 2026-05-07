@@ -23,15 +23,20 @@ const heroMeasureClass = 'w-full max-w-2xl';
         <span
           class="inline-flex max-w-full items-center rounded-full border border-sky-200/80 bg-sky-50 px-3 py-1 text-xs font-semibold tracking-wide text-sky-900"
         >
-          サイト制作・開発支援（個人事業）
+          {brand.heroBadge}
         </span>
       </p>
       <h1
         id="hero-heading"
         class="animate-hero-in animate-hero-delay-1 w-full text-pretty text-3xl font-semibold leading-normal tracking-tight text-slate-900 md:text-[2.125rem] md:leading-snug"
       >
-        {brand.tagline}
+        {brand.heroHeading}
       </h1>
+      <p
+        class="animate-hero-in animate-hero-delay-2 m-0 w-full text-pretty text-lg font-medium leading-snug text-slate-700 md:text-xl md:leading-snug"
+      >
+        {brand.tagline}
+      </p>
       <div class="flex w-full flex-col gap-5 md:gap-6">
         {
           brand.introParagraphs.map((text, i) => (
@@ -39,7 +44,7 @@ const heroMeasureClass = 'w-full max-w-2xl';
               class:list={[
                 introClass,
                 'm-0 w-full animate-hero-in',
-                i === 0 ? 'animate-hero-delay-2' : 'animate-hero-delay-3',
+                i === 0 ? 'animate-hero-delay-3' : 'animate-hero-delay-4',
               ]}
             >
               {text}
@@ -47,7 +52,7 @@ const heroMeasureClass = 'w-full max-w-2xl';
           ))
         }
       </div>
-      <div class="animate-hero-in animate-hero-delay-4 flex w-full flex-wrap gap-3 pt-1 sm:gap-4">
+      <div class="animate-hero-in animate-hero-delay-5 flex w-full flex-wrap gap-3 pt-1 sm:gap-4">
         <a
           href="#contact"
           class="motion-safe:hover:-translate-y-px inline-flex min-h-11 min-w-[10rem] items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm outline-none transition-[background-color,transform,box-shadow] duration-200 hover:bg-slate-800 hover:shadow-md motion-safe:active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"

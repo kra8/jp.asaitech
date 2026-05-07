@@ -1,0 +1,101 @@
+---
+import Icon from './Icon.astro';
+import Section from './Section.astro';
+import { flow } from '../content/site';
+import type { IconName } from '../types/icon';
+
+const cardClass =
+  'rounded-2xl border border-slate-200/90 bg-white p-5 shadow-[0_1px_3px_rgb(15_23_42_/_.06)] motion-safe:transition-[border-color,box-shadow] motion-safe:duration-200 hover:border-sky-200/75 hover:shadow-[0_10px_32px_rgb(15_23_42_/_.07)] md:p-6';
+
+const bodyClass = 'm-0 text-sm leading-readable text-slate-600 md:text-base md:leading-readable-lg';
+
+const lastIndex = flow.steps.length - 1;
+---
+
+<Section id="flow" title={flow.title} lead={flow.lead}>
+  <ol class="m-0 flex list-none flex-col p-0" aria-label="ご依頼の流れの6つのステップ" data-stagger-children>
+    {
+      flow.steps.flatMap((step, index) => {
+        const stepRow = (
+          <li class="m-0 flex gap-5 md:gap-8">
+            <div class="flex w-11 shrink-0 flex-col items-center md:w-14">
+              <span class="relative z-[2] flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-50 to-white text-sm font-semibold tabular-nums text-sky-950 shadow-[inset_0_1px_0_rgb(255_255_255_/_.95)] ring-1 ring-sky-200/80 md:h-12 md:w-12 md:text-base" aria-label={`ステップ ${index + 1}`}>
+                <span aria-hidden="true">{index + 1}</span>
+              </span>
+              {index < lastIndex ? (
+                <span class="mt-4 min-h-[2.5rem] w-px flex-1 bg-gradient-to-b from-sky-100 via-slate-200 to-slate-100 md:min-h-[3.25rem]" aria-hidden="true" />
+              ) : null}
+            </div>
+
+            <article class:list={[cardClass, 'min-w-0 flex-1']} aria-labelledby={`flow-step-${index}-heading`}>
+              <div class="flex flex-wrap items-start gap-3">
+                <span class="inline-flex shrink-0 rounded-xl bg-sky-50/90 p-2 text-sky-900 ring-1 ring-sky-100/90">
+                  <Icon name={step.icon as IconName} size={22} class="text-sky-900/90" />
+                </span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="m-0 text-lg font-semibold leading-snug tracking-tight text-slate-900" id={`flow-step-${index}-heading`}>
+                    {step.title}
+                    {step.subtitle ? (
+                      <span class="mt-1 block text-sm font-normal leading-snug text-slate-500">{step.subtitle}</span>
+                    ) : null}
+                  </h3>
+
+                  <div class="mt-4 flex flex-col gap-3">
+                    {step.paragraphs.map((p) => (
+                      <p class:list={[bodyClass]}>{p}</p>
+                    ))}
+
+                    {step.regionNote ? (
+                      <p class:list={[bodyClass, 'rounded-xl bg-slate-50/90 px-3 py-2.5 text-slate-700 ring-1 ring-slate-100 md:px-4 md:py-3']}>
+                        <span class="font-medium text-slate-800">対応エリア：</span>
+                        {step.regionNote}
+                      </p>
+                    ) : null}
+
+                    {step.bulletIntro ? (
+                      <p class:list={[bodyClass, 'm-0 font-medium text-slate-800']}>{step.bulletIntro}</p>
+                    ) : null}
+
+                    {step.bullets && step.bullets.length > 0 ? (
+                      <ul class="m-0 list-none space-y-2 rounded-xl bg-slate-50/80 px-3 py-3 ring-1 ring-slate-100 md:px-4 md:py-3.5">
+                        {step.bullets.map((item) => (
+                          <li class="relative m-0 pl-6 text-sm leading-readable text-slate-700 md:text-base md:leading-readable-lg">
+                            <span class="absolute left-1 top-[0.55em] h-1.5 w-1.5 rounded-full bg-sky-600/80" aria-hidden="true" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+
+                    {step.bulletClosing ? <p class:list={[bodyClass]}>{step.bulletClosing}</p> : null}
+                  </div>
+                </div>
+              </div>
+            </article>
+          </li>
+        );
+
+        if (index >= lastIndex) return [stepRow];
+
+        const bridgeRow = (
+          <li class="m-0 flex gap-5 md:gap-8" aria-hidden="true" role="presentation" data-flow-bridge>
+            <div class="flex w-11 shrink-0 justify-center md:w-14">
+              <span class="h-12 w-px shrink-0 bg-gradient-to-b from-sky-100 via-slate-200 to-slate-100 md:h-16" />
+            </div>
+            <div class="h-12 min-w-0 flex-1 md:h-16" />
+          </li>
+        );
+
+        return [stepRow, bridgeRow];
+      })
+    }
+  </ol>
+</Section>
+
+<style>
+  :global([data-reveal].is-revealed [data-stagger-children] > li[data-flow-bridge]) {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+</style>

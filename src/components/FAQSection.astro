@@ -1,0 +1,42 @@
+---
+import Section from './Section.astro';
+import { faq } from '../content/site';
+
+const headingClass =
+  'm-0 text-pretty text-lg font-semibold leading-snug tracking-tight text-slate-900 md:text-xl';
+const answerClass =
+  'm-0 mt-3 text-pretty text-base leading-readable text-slate-600 md:mt-4 md:text-lg md:leading-readable-lg';
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+---
+
+<Section id="faq" title={faq.title} lead={faq.lead}>
+  <div class="flex flex-col gap-5 md:gap-6" data-stagger-children>
+    {
+      faq.items.map((item, i) => (
+        <article
+          class="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-[0_1px_3px_rgb(15_23_42_/_.06)] md:p-6"
+          aria-labelledby={`faq-q-${i}`}
+        >
+          <h3 class={headingClass} id={`faq-q-${i}`}>
+            {item.question}
+          </h3>
+          <p class={answerClass}>{item.answer}</p>
+        </article>
+      ))
+    }
+  </div>
+</Section>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
