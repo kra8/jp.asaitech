@@ -1,0 +1,26 @@
+---
+/**
+ * 単一の肉球シルエット（装飾・aria-hidden 前提）
+ */
+interface Props {
+  class?: string;
+  /** CSS rotate の度数 */
+  rotate?: number;
+}
+
+const { class: className = 'h-7 w-7', rotate = 0 } = Astro.props;
+---
+
+<svg
+  class:list={['block shrink-0', className]}
+  viewBox="0 0 56 56"
+  fill="currentColor"
+  aria-hidden="true"
+  style={rotate !== 0 ? `transform: rotate(${rotate}deg)` : undefined}
+>
+  <ellipse cx="26" cy="40" rx="14" ry="12" />
+  <circle cx="12" cy="18" r="8" />
+  <circle cx="26" cy="10" r="8" />
+  <circle cx="42" cy="14" r="8" />
+  <circle cx="48" cy="28" r="7" />
+</svg>
