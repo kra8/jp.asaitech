@@ -1,0 +1,67 @@
+---
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() ?? '';
+const hasGa = gaId.length > 0;
+---
+
+{
+  hasGa && (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+      <script is:inline define:vars={{ gaId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', gaId, { anonymize_ip: true, send_page_view: true });
+        window.__asaitechGtag = gtag;
+      </script>
+    </>
+  )
+}
+
+<script>
+  import { analyticsEvents } from '../lib/analytics-events';
+
+  function sendEvent(name) {
+    if (typeof window.__asaitechGtag !== 'function') return;
+    window.__asaitechGtag('event', name);
+  }
+
+  function bindClickTracking() {
+    document.querySelectorAll('[data-analytics-click]').forEach((el) => {
+      if (el.dataset.analyticsBound === '1') return;
+      el.dataset.analyticsBound = '1';
+      const eventName = el.getAttribute('data-analytics-click');
+      if (!eventName) return;
+      el.addEventListener('click', () => sendEvent(eventName));
+    });
+  }
+
+  function bindContactView() {
+    const contact = document.getElementById('contact');
+    if (!contact || contact.dataset.analyticsViewBound === '1') return;
+    contact.dataset.analyticsViewBound = '1';
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting || entry.intersectionRatio < 0.5) continue;
+          sendEvent(analyticsEvents.contactSectionView);
+          observer.disconnect();
+          break;
+        }
+      },
+      { threshold: [0.5] },
+    );
+    observer.observe(contact);
+  }
+
+  function initAnalytics() {
+    bindClickTracking();
+    bindContactView();
+  }
+
+  initAnalytics();
+  document.addEventListener('astro:page-load', initAnalytics);
+</script>

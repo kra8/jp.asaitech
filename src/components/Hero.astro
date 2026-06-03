@@ -1,11 +1,12 @@
 ---
 import Icon from './Icon.astro';
+import { analyticsEvents } from '../lib/analytics-events';
 import { brand } from '../content/site';
 
 const introClass =
   'text-pretty text-base leading-readable text-slate-600 md:text-lg md:leading-readable-lg';
-/** 見出し〜本文は同一の送り幅で左右を揃える */
 const heroMeasureClass = 'w-full max-w-2xl';
+const { primary, secondary } = brand.heroCtas;
 ---
 
 <section
@@ -37,14 +38,19 @@ const heroMeasureClass = 'w-full max-w-2xl';
       >
         {brand.tagline}
       </p>
-      <div class="flex w-full flex-col gap-5 md:gap-6">
+      <p
+        class="animate-hero-in animate-hero-delay-3 m-0 w-full text-pretty text-base font-medium leading-readable text-slate-600 md:text-lg"
+      >
+        {brand.heroLead}
+      </p>
+      <div class="flex w-full flex-col gap-4 md:gap-5">
         {
           brand.introParagraphs.map((text, i) => (
             <p
               class:list={[
                 introClass,
                 'm-0 w-full animate-hero-in',
-                i === 0 ? 'animate-hero-delay-3' : 'animate-hero-delay-4',
+                i === 0 ? 'animate-hero-delay-4' : 'animate-hero-delay-5',
               ]}
             >
               {text}
@@ -52,20 +58,27 @@ const heroMeasureClass = 'w-full max-w-2xl';
           ))
         }
       </div>
-      <div class="animate-hero-in animate-hero-delay-5 flex w-full flex-wrap gap-3 pt-1 sm:gap-4">
+      <div
+        class="animate-hero-in animate-hero-delay-5 flex w-full flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+      >
+        <div class="flex flex-col gap-2">
+          <a
+            href={primary.href}
+            data-analytics-click={analyticsEvents.heroCtaClick}
+            class="motion-safe:hover:-translate-y-px inline-flex min-h-12 min-w-[11rem] items-center justify-center gap-2 rounded-xl bg-sky-900 px-7 py-3.5 text-base font-semibold text-white shadow-md outline-none transition-[background-color,transform,box-shadow] duration-200 hover:bg-sky-950 hover:shadow-lg motion-safe:active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+          >
+            <Icon name="mail" size={18} class="opacity-95" />
+            {primary.label}
+          </a>
+          <p class="m-0 text-sm leading-readable text-slate-500">{brand.heroCtaNote}</p>
+        </div>
         <a
-          href="#contact"
-          class="motion-safe:hover:-translate-y-px inline-flex min-h-11 min-w-[10rem] items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm outline-none transition-[background-color,transform,box-shadow] duration-200 hover:bg-slate-800 hover:shadow-md motion-safe:active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
-        >
-          <Icon name="mail" size={17} class="opacity-90" />
-          お問い合わせへ
-        </a>
-        <a
-          href="#services"
-          class="motion-safe:hover:-translate-y-px inline-flex min-h-11 min-w-[10rem] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-800 outline-none transition-[border-color,background-color,transform,box-shadow] duration-200 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm motion-safe:active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
+          href={secondary.href}
+          data-analytics-click={analyticsEvents.heroSecondaryClick}
+          class="motion-safe:hover:-translate-y-px inline-flex min-h-11 min-w-[10rem] items-center justify-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-800 outline-none transition-[border-color,background-color,transform,box-shadow] duration-200 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm motion-safe:active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800 sm:self-center"
         >
           <Icon name="layout-template" size={17} class="text-slate-500" />
-          サービスを見る
+          {secondary.label}
         </a>
       </div>
     </div>

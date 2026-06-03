@@ -1,5 +1,6 @@
 ---
 import PawPrint from './PawPrint.astro';
+import { analyticsEvents } from '../lib/analytics-events';
 import { brand, navItems } from '../content/site';
 ---
 
@@ -31,16 +32,25 @@ import { brand, navItems } from '../content/site';
         class="flex flex-wrap items-center justify-end gap-x-1 gap-y-1 text-sm font-medium leading-snug text-slate-600 transition-[gap] duration-200 ease-out motion-reduce:transition-none sm:gap-x-4 sm:gap-y-2 md:gap-x-5 group-data-[compact]:gap-x-px group-data-[compact]:gap-y-px group-data-[compact]:sm:gap-x-3 group-data-[compact]:sm:gap-y-1 group-data-[compact]:md:gap-x-4"
       >
         {
-          navItems.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-1.5 text-sm outline-none transition-[padding,min-height,font-size] duration-200 ease-out hover:bg-slate-100 hover:text-sky-950 motion-reduce:transition-none sm:min-h-0 sm:justify-start sm:rounded-lg sm:px-2.5 sm:py-1.5 group-data-[compact]:min-h-8 group-data-[compact]:px-1.5 group-data-[compact]:py-1 group-data-[compact]:text-[0.8125rem] group-data-[compact]:sm:min-h-0 group-data-[compact]:sm:px-2 group-data-[compact]:sm:py-1 group-data-[compact]:sm:text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
+          navItems.map((item) => {
+            const isContact = item.href === '#contact';
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  data-analytics-click={isContact ? analyticsEvents.navContactClick : undefined}
+                  class:list={[
+                    'inline-flex min-h-9 items-center justify-center rounded-md px-2 py-1.5 text-sm outline-none transition-[padding,min-height,font-size] duration-200 ease-out motion-reduce:transition-none sm:min-h-0 sm:justify-start sm:rounded-lg sm:px-2.5 sm:py-1.5 group-data-[compact]:min-h-8 group-data-[compact]:px-1.5 group-data-[compact]:py-1 group-data-[compact]:text-[0.8125rem] group-data-[compact]:sm:min-h-0 group-data-[compact]:sm:px-2 group-data-[compact]:sm:py-1 group-data-[compact]:sm:text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800',
+                    isContact
+                      ? 'font-semibold text-sky-900 ring-1 ring-sky-200/90 bg-sky-50/90 hover:bg-sky-100'
+                      : 'hover:bg-slate-100 hover:text-sky-950',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
         }
       </ul>
     </nav>

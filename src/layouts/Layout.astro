@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
 import { about, brand, contact, invoice, siteMeta } from '../content/site';
 
 interface Props {
@@ -125,5 +126,6 @@ const iconBase = import.meta.env.BASE_URL;
     class="min-h-dvh bg-white font-sans text-slate-900 antialiased [font-feature-settings:'palt']"
   >
     <slot />
+    <Analytics />
   </body>
 </html>

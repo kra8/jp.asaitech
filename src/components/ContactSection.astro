@@ -2,6 +2,7 @@
 import Icon from './Icon.astro';
 import SurfaceCard from './SurfaceCard.astro';
 import Section from './Section.astro';
+import { analyticsEvents } from '../lib/analytics-events';
 import { contact } from '../content/site';
 
 const cardTitleClass =
@@ -19,6 +20,7 @@ const cardTitleIconClass = 'text-sky-800/85 shrink-0';
       <p class="m-0 mt-4">
         <a
           href={`mailto:${contact.email.address}`}
+          data-analytics-click={analyticsEvents.mailtoClick}
           class="break-all text-base font-medium leading-readable text-sky-900 underline decoration-sky-300 underline-offset-[5px] transition-colors hover:decoration-sky-600 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
         >
           {contact.email.address}

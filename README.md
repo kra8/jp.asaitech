@@ -55,6 +55,14 @@
 
 ---
 
+## アクセス解析（GA4）
+
+測定 ID はビルド時に `PUBLIC_GA_MEASUREMENT_ID` で注入（未設定ならスクリプトなし）。
+
+- ローカル: `.env` に `PUBLIC_GA_MEASUREMENT_ID=G-...`（`.env.example` 参照）
+- 本番: GitHub Actions の repository variable `PUBLIC_GA_MEASUREMENT_ID`
+- 手順: [asaitech-ai-company · analytics-setup](https://github.com/asaitech/asaitech-ai-company/blob/main/teams/asaitech-homepage/docs/analytics-setup.md)
+
 ## 開発
 
 Node.js **≥ 22.12** · パッケージマネージャは **pnpm**（`package.json` の `packageManager` を参照）
