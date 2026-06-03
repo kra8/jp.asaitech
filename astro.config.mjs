@@ -15,7 +15,17 @@ const base = process.env.BASE_PATH ?? '/';
 export default defineConfig({
   site,
   base,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // GSC が余計な xmlns 付き urlset を弾く事例があるため最小構成にする
+      namespaces: {
+        news: false,
+        xhtml: false,
+        image: false,
+        video: false,
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
